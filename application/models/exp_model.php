@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/* Author: Jorge Torres
- * Description: Login model class
- */
+
 class Exp_model extends CI_Model{
 	function __construct(){
 		parent::__construct();
@@ -28,15 +26,137 @@ class Exp_model extends CI_Model{
 
 	}
 
-	public function loadExp($dato){
-		$this->db->select('tasks');
+	public function loadTasks($dato){
+		$this->db->select('*');
 		$this->db->where('id_exp',$dato);
-
 		$consult = $this->db->get('experimentos');
-		$tareas = $consult->row()->tasks;
+		$protocolo = $consult->row()->prot;
 
-		return $tareas;
+		$this->db->select('*')->from('prottask')->where('id_prot',$protocolo);
+		$selTask = $this->db->get();
+		if($selTask != NULL){
+			$arrSelect= array();
+			$i = 0;
+			foreach ($selTask->result() as $row ){
+				$arrSelect[$i]= $row->id_task;
+				$i++;
+			}
+			return $arrSelect;
+		}
+		else{
+			return NULL;
+		}
+	}
+
+	public function getNombre($dato){
+		$this->db->select('nom_exp');
+		$this->db->where('id_exp',$dato);
+		$consult = $this->db->get('experimentos');
+		$nombre = $consult->row()->nom_exp;
+		return $nombre;
 
 	}
+
+	public function getFechaIni($dato){
+		$this->db->select('fechaIni');
+		$this->db->where('id_exp',$dato);
+		$consult = $this->db->get('experimentos');
+		$fechaI = $consult->row()->fechaIni;
+		$fecha = date("d/m/Y", strtotime($fechaI));
+		return $fecha;		
+	}
+
+	public function getFechaFin($dato){
+		$this->db->select('fechaFin');
+		$this->db->where('id_exp',$dato);
+		$consult = $this->db->get('experimentos');
+		$fechaF = $consult->row()->fechaFin;
+		$fecha = date("d/m/Y", strtotime($fechaF));
+		return $fecha;		
+	}
+
+	public function getDesc($dato){
+		$this->db->select('desc');
+		$this->db->where('id_exp',$dato);
+		$consult = $this->db->get('experimentos');
+		$descri = $consult->row()->desc;
+		return $descri;		
+	}
+
+	public function modOld($dato){
+		$query = $this->db->where('id_exp',$dato)->get('experimentos');
+		$protUse = $query->row()->prot;
+		$datChecks = $this->input->post('taski');
+		$tasksDB = $this->db->get('tasks');
+		$checkAll = array();
+		foreach( $tasksDB->result() as $row ){
+			$checkAll[$row->id_task] = 0;
+		}
+		for($i=0;$i<count($datChecks);$i++){
+			if(array_key_exists($datChecks[$i],$checkAll)){
+				$checkAll[$datChecks[$i]]=1;
+			}
+		}
+
+		$flag = true;
+		foreach ($checkAll as $key => $value) {
+			if($value == 1){
+				$query = $this->db->select('*')->where('id_task',$key)->where('id_prot',$protUse)->get('prottask');
+				if($query -> num_rows() == 0){
+					$queryIns = array(
+						'id_prot' => $protUse,
+						'id_task' => $key,
+						);
+					$this->db->insert('prottask',$queryIns);
+					$flag = false;
+				}
+
+			}
+			else{
+				$query = $this->db->select('*')->where('id_task',$key)->where('id_prot',$protUse)->get('prottask');
+				if($query -> num_rows() == 1){
+					$this->db->where('id_task',$key)->where('id_prot',$protUse)->delete('prottask');
+					$flag = false;
+				}
+			}
+		}
+		if($flag == false){
+			$myvar  = empty($myvar) ? NULL : $myvar;
+			foreach ($checkAll as $key => $value) {
+				$this->db->where('id_task',$key);
+				$this->db->where('id_prot',$protUse);
+				$this->db->update('prottask',array('pos'=> $myvar));
+			}
+		}
+		$this->db->where('id_exp',$dato);
+		$fechaFormatI = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaIni'));
+		$fechaFormatF = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaFin'));
+		$newData = array(
+				'nom_exp'=> $this->input->post('nomProto'),
+				'desc' => $this->input->post('descProto'),
+				'fechaIni' => $fechaFormatI->format('Y-m-d'),
+				'fechaFin' => $fechaFormatF->format('Y-m-d'),
+			);
+		$this->db->update('experimentos',$newData);
+		return 'holiwi';
+
+
+	}
+
+	public function newExp($dato){
+		
+
+	}
+
+	public function getNameProt($dato){
+		$this->db->select('prot');
+		$this->db->where('id_exp',$dato);
+		$query1 = $this->db->get('experimentos');
+		$dato1 = $query1->row()->prot;
+		$query2 = $this->db->select('nom_prot')->where('id_prot',$dato1)->get('protocolo');
+		$dato2 = $query2->row()->nom_prot;
+		return $dato2;
+	}
+
 }
 ?>

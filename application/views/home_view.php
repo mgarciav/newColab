@@ -12,6 +12,7 @@
 				<td>Nombre del Experimento</td>
 				<td>Descripción</td>
 				<td>Fecha de inicio</td>
+				<td>Fecha Fin</td>
 				<td>Estado</td>
 			</tr>
 			<?php for($j=0;$j<count($datosExp);$j++){ ?>
@@ -26,7 +27,10 @@
 					<?php echo $datosExp[$j]['desc']?>
 				</td>
 				<td>
-					<?php echo $datosExp[$j]['fechas']?>
+					<?php echo $datosExp[$j]['fechaIni']?>
+				</td>
+				<td>
+					<?php echo $datosExp[$j]['fechaFin']?>
 				</td>
 				<td>
 					<?php echo $datosExp[$j]['estado']?>

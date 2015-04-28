@@ -33,8 +33,9 @@
 	}
 
 	public function antiguo(){
-		$idPedido = $this->input->post('experi');
-		$this->session->set_flashdata('datito',$idPedido);
+		$data['id_exp'] = $this->input->post('experi');
+
+		$this->session->set_userdata($data,$idPedido);
 		
 		redirect('/exp');
 	}

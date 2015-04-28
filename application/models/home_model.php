@@ -35,11 +35,12 @@ class Home_model extends CI_Model{
 			$expTemp[$i]['id_exp'] = $row->id_exp;
 			$expTemp[$i]['nom_exp'] = $row->nom_exp;
 			$expTemp[$i]['desc'] = $row->desc;
-			$expTemp[$i]['fechas'] = $row->fechas;
+			$expTemp[$i]['fechaIni'] = $row->fechaIni;
 			$expTemp[$i]['investis'] = $row->investis;
 			$expTemp[$i]['prot'] = $row->prot;
 			$expTemp[$i]['dueno_exp'] = $row->dueno_exp;
 			$expTemp[$i]['estado'] = $row->estado;
+			$expTemp[$i]['fechaFin'] = $row->fechaFin;
 			$i++;
 		}
 
