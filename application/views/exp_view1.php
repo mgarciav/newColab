@@ -42,7 +42,8 @@
 		<?php }?>
 		<p>Fecha de Inicio: <input type="text" class="datepicker" name="fechaIni"></p>
 		<p>Fecha de Termino: <input type="text" class="datepicker" name="fechaFin"></p>
-		<?php echo '<a href ='.base_url().'exp/saveLogout> Logout</a>'; ?>
+		<input value="Guardar y seguir" type="submit"><br>
+		<?php echo '<a href ='.base_url().'exp/do_Logout> Logout</a>'; ?>
 	</form>
 
 </body>

@@ -48,12 +48,14 @@
 	public function sortOld(){
 			$this->load->model('exp_model');
 			$var = $this->session->userdata('id_exp');
-			echo ($this->exp_model->modOld($var));
+			if($this->exp_model->modOld($var))
+				redirect('sort');
 	}
 	public function sortNew(){
 		$this->load->model('exp_model');
 		$var = $this->session->userdata('id_exp');
-		echo ($this->exp_model->newExp($var));
+		if($this->exp_model->newExp($var))
+			redirect('sort');
 	}
 
  }

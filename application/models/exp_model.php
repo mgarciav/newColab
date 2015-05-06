@@ -138,14 +138,55 @@ class Exp_model extends CI_Model{
 				'fechaFin' => $fechaFormatF->format('Y-m-d'),
 			);
 		$this->db->update('experimentos',$newData);
-		return 'holiwi';
-
+		return true;
 
 	}
 
 	public function newExp($dato){
-		
-
+		$this->db->insert('protocolo',array('nom_prot' => $this->input->post('nameProto')));
+		$this->db->select('id_prot')->where('nom_prot',$this->input->post('nameProto'));
+		$query = $this->db->get('protocolo');
+		$idProt = $query->row()->id_prot;
+		$datChecks = $this->input->post('taski');
+		$tasksDB = $this->db->get('tasks');
+		$checkAll = array();
+		foreach( $tasksDB->result() as $row ){
+			$checkAll[$row->id_task] = 0;
+		}
+		for($i=0;$i<count($datChecks);$i++){
+			if(array_key_exists($datChecks[$i],$checkAll)){
+				$checkAll[$datChecks[$i]]=1;
+			}
+		}
+		foreach ($checkAll as $key => $value) {
+			if($value == 1){
+				$query = $this->db->select('*')->where('id_task',$key)->where('id_prot',$idProt)->get('prottask');	
+				$queryIns = array(
+					'id_prot' => $idProt,
+					'id_task' => $key,
+					);
+				$this->db->insert('prottask',$queryIns);
+			}
+		}
+		$this->db->where('id_exp',$dato);
+		$fechaFormatI = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaIni'));
+		$fechaFormatF = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaFin'));
+		$newData = array(
+				'nom_exp'=> $this->input->post('nomProto'),
+				'desc' => $this->input->post('descProto'),
+				'fechaIni' => $fechaFormatI->format('Y-m-d'),
+				'fechaFin' => $fechaFormatF->format('Y-m-d'),
+				'estado' => 'incompleta',
+				'dueno_exp' => $this->session->userdata('userid'),
+				'prot' => $idProt,
+			);
+		$this->db->insert('experimentos', $newData);
+		$this->db->select('id_exp')->where('nom_exp',$this->input->post('nomProto'));
+		$query2 = $this->db->get('experimentos');
+		$datoUse = $query2->row()->id_exp;
+		$data['id_exp'] = $datoUse;
+		$this->session->set_userdata($data,$datoUse);
+		return true;
 	}
 
 	public function getNameProt($dato){
