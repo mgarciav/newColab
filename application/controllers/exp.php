@@ -10,7 +10,7 @@
 		
 		$this->load->model('exp_model');
 		$datosTasks = $this->exp_model->getDatos();
-		$var = $this->session->userdata('id_exp');
+		$var = $this->session->flashdata('datito');
 		if(NULL == $var){
 			$this->load->view('exp_view1', array('datosTasks' => $datosTasks));
 		}
@@ -27,6 +27,7 @@
 				'allExp' => $allExp,
 				'id_exp' => $var,
 				);
+			$this->session->keep_flashdata('datito');
 			$this->load->view('exp_view2', array('datos' => $datos));	
 		}
 		
@@ -47,13 +48,15 @@
 
 	public function sortOld(){
 			$this->load->model('exp_model');
-			$var = $this->session->userdata('id_exp');
+			$var = $this->session->flashdata('datito');
+			$this->session->keep_flashdata('datito');
 			if($this->exp_model->modOld($var))
 				redirect('sort');
 	}
 	public function sortNew(){
 		$this->load->model('exp_model');
-		$var = $this->session->userdata('id_exp');
+		$var = $this->session->flashdata('datito');
+		$this->session->keep_flashdata('datito');
 		if($this->exp_model->newExp($var))
 			redirect('sort');
 	}

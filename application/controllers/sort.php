@@ -8,13 +8,14 @@
 	
 	public function index(){
 		$this->load->model('sort_model');
-		if($this->sort_model->checkOrden($this->session->userdata('id_exp'))){
-			$datosSort = $this->sort_model->cargaAnt($this->session->userdata('id_exp'));
+		$var = $this->session->flashdata('datito');
+		if($this->sort_model->checkOrden($var)){
+			$datosSort = $this->sort_model->cargaAnt($var);
 		}
 		else{
-			$datosSort = $this->sort_model->cargaNueva($this->session->userdata('id_exp'));
+			$datosSort = $this->sort_model->cargaNueva($var);
 			$this->load->view('sort_view',array('datosSort' => $datosSort));
-			$datosSort = $this->sort_model->cargaAnt($this->session->userdata('id_exp'));	
+			$datosSort = $this->sort_model->cargaAnt($var);	
 
 		}
 
