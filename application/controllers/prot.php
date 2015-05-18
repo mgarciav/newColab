@@ -1,16 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
- class Home extends CI_Controller{
+ class Prot extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->check_isvalidated();
 	}
 	
 	public function index(){
-		
-
-		
-		$this->load->view('home_view');
+		$this->load->model('prot_model');
+		$datosProt = $this->prot_model->getDatos();
+		$this->load->view('prot_view', array('datosProt' => $datosProt));
 
 	}
 	
@@ -26,18 +25,19 @@
 		redirect('login');
 	}
 
-	public function exp(){
-		redirect('/exper');
+	public function antiguo(){
+		$idPedido = $this->input->post('proti');
+		$this->session->set_flashdata('datito',$idPedido);
+		redirect('/tasks');
+		
+
 	}
 
-	public function prot(){
-		redirect('/prot');
+	public function nuevo(){
+		redirect('/tasks');
 	}
-
-	public function ui(){
-		redirect('/ui');
-	}
+	
+	
 
  }
  ?>
-

@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Home_model extends CI_Model{
+class Exper_model extends CI_Model{
 	function __construct(){
 		parent::__construct();
 	}
 	
-	/*public function tieneExp(){
+	public function tieneExp(){
 		$idExp = $this->session->userdata('userid');
 
 		$this->db->where('dueno_exp',$idExp);
@@ -19,9 +19,9 @@ class Home_model extends CI_Model{
 		}
 		return false;
 
-	}*/
+	}
 
-	/*public function obtenerExp(){
+	public function obtenerExp(){
 		$idExp = $this->session->userdata('userid');
 
 		$this->db->where('dueno_exp',$idExp);
@@ -51,7 +51,7 @@ class Home_model extends CI_Model{
 		
 
 
-	}*/
+	}
 	
 }
 ?>

@@ -6,10 +6,7 @@ class Sort_model extends CI_Model{
 	}
 
 	public function checkOrden($dato){
-		$this->db->select('prot')->where('id_exp',$dato);
-		$query1 = $this->db->get('experimentos');
-		$idProt = $query1->row()->prot;
-		$this->db->select('pos')->where('id_prot',$idProt);
+		$this->db->select('pos')->where('id_prot',$dato);
 		$query2 = $this->db->get('prottask');
 		$checkNull = $query2->row()->pos;
 		if($checkNull == NULL){
@@ -19,10 +16,7 @@ class Sort_model extends CI_Model{
 	}
 
 	public function cargaNueva($dato){
-		$this->db->select('prot')->where('id_exp',$dato);
-		$query1 = $this->db->get('experimentos');
-		$idProt = $query1->row()->prot;
-		$this->db->select('*')->where('id_prot',$idProt);
+		$this->db->select('*')->where('id_prot',$dato);
 		$query2 = $this->db->get('prottask');
 		$arrDatos = array();
 		$i = 0;
@@ -39,10 +33,7 @@ class Sort_model extends CI_Model{
 	}
 
 	public function cargaAnt($dato){
-		$this->db->select('prot')->where('id_exp',$dato);
-		$query1 = $this->db->get('experimentos');
-		$idProt = $query1->row()->prot;
-		$this->db->select('*')->where('id_prot',$idProt)->order_by('pos','desc');
+		$this->db->select('*')->where('id_prot',$dato)->order_by('pos','desc');
 		$query2 = $this->db->get('prottask');
 		$arrDatos = array();
 		$i = 0;

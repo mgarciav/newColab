@@ -10,11 +10,6 @@
 	<script>
 		var arrTasks= <?php echo json_encode($datos['allExp']['taskCheck'])?>;
 		$(document).on('ready', function(){
-			$( ".datepicker" ).datepicker();
-			$('.hidden').hide();
-			$('.toggler').click(function(){
-   				$('.hidden', $(this).parent()).toggle();
-			});
 			var elemCheck = document.getElementsByName('taski[]');
 			for(j=0;j<arrTasks.length;j++){
 				for(k=0;k<elemCheck.length;k++){
@@ -23,26 +18,39 @@
 					}
 				}
 			}
+			$( ".datepicker" ).datepicker();
+			$('.hidden').hide();
+			$('.toggler').click(function(){
+   				$('.hidden', $(this).parent()).toggle();
+			});		
+			$('.group').hide();
+  			$('#0').show();
+  			$('#selectMe').change(function(){
+    			$('.group').hide();
+    			$('#'+$(this).val()).show();
+  			});
+			
+			
 		});
 	</script>
 </head>
 <body>
 	
-	<form id="tasks" action="<?php base_url();?>exp/saveOld" method="post">
-		<p>Nombre del Experimento: <input type="text" name="nomProto" value="<?php echo $datos['allExp']['nom_exp']?>"></p>
-		<p>Descripción del Experimento: <input type="text" name="descProto" value="<?php echo $datos['allExp']['desc']?>"></p>
-		<select name="protocolo">
-			<?php $auxH = $datos['datosProt'][0]?>
-			<option value="<?php echo $auxH ?>"><?php echo $auxH ?></option>
-			<?php for($i=0;$i<count($datos['datosTasks']);$i++){ ?>
-					<?php if($auxH != $datos['datosTasks'][$i]['tipo']){?>
-						<option value="<?php echo $datos['datosProt'][$i]?>"><?php echo $datos['datosProt'][$i]?></option></br>
-						<?php $auxH= $datos['datosProt'][$i] ?>
-					<?php }?>
-			<?php }?>
-		</select>
-<!--	<?php for($i=0;$i<count($datos['datosTasks']);$i++){ ?>
+	<form id="tasks" action="<?php base_url();?>tasks/upOld" method="post">
+		<p>Nombre del Protocolo: <input type="text" name="nomProto" value="<?php echo $datos['allExp']['nameProt']?>"></p>
+		<?php $auxH = 'asd'?>
+		<select id="selectMe">
+ 		<?php for($i=0;$i<count($datos['datosTasks']);$i++){ ?>
 			<?php if($auxH != $datos['datosTasks'][$i]['tipo']){?> 
+				<option value="<?php echo $i?>"><?php echo $datos['datosTasks'][$i]['tipo']?></option>
+				<?php $auxH = $datos['datosTasks'][$i]['tipo']?>
+			<?php }?>
+		<?php }?>
+		</select>
+		<?php $auxH = 'asd'?>
+		<?php for($i=0;$i<count($datos['datosTasks']);$i++){ ?>
+			<?php if($auxH != $datos['datosTasks'][$i]['tipo']){?> 
+				<div class="group" id="<?php echo $i?>">
 				<h1> <?php echo $datos['datosTasks'][$i]['tipo']?></h1>
 				<?php $auxH = $datos['datosTasks'][$i]['tipo']?>
 			<?php }?>
@@ -58,13 +66,16 @@
 					</a>
 				</k>
 			</div>
-		<?php }?> -->
-		<p>Fecha de Inicio: <input type="text" class="datepicker" name="fechaIni" value="<?php echo $datos['allExp']['fechaIni']?>"></p>
-		<p>Fecha de Termino: <input type="text" class="datepicker" name="fechaFin" value="<?php echo $datos['allExp']['fechaFin']?>"></p>
+			<?php if(($i+1)<count($datos['datosTasks'])) { ?>
+				<?php if($auxH !=$datos['datosTasks'][$i+1]['tipo'])  echo "</div>"?>
+			<?php }?>
+		<?php }?>
+		</div>
 		<input value="Guardar y seguir" type="submit"><br>
-		<?php echo '<a href ='.base_url().'/home/do_logout> Logout</a>'; ?>
+	
 
 	</form>
+	<?php echo '<a href ='.base_url().'/home/do_logout> Logout</a>'; ?>
 
 </body>
 </html>

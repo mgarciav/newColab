@@ -11,8 +11,9 @@
 		$this->load->model('exp_model');
 		$datosTasks = $this->exp_model->getDatos();
 		$var = $this->session->flashdata('datito');
+		$datosProt = $this->exp_model->getProtos();
 		if(NULL == $var){
-			$this->load->view('exp_view1', array('datosTasks' => $datosTasks));
+			$this->load->view('exp_view1', array('datosProt' => $datosProt));
 		}
 		else{
 			$allExp = array();
@@ -26,6 +27,7 @@
 				'datosTasks' => $datosTasks,
 				'allExp' => $allExp,
 				'id_exp' => $var,
+				'datosProt' => $datosProt,
 				);
 			$this->session->keep_flashdata('datito');
 			$this->load->view('exp_view2', array('datos' => $datos));	
@@ -46,19 +48,18 @@
 		redirect('login');
 	}
 
-	public function sortOld(){
+	public function saveOld(){
 			$this->load->model('exp_model');
-			$var = $this->session->flashdata('datito');
-			$this->session->keep_flashdata('datito');
-			if($this->exp_model->modOld($var))
-				redirect('sort');
+			$var = $this->session->flashdata('datito');			
+			if($this->exp_model->upExp($var))
+				redirect('home');
 	}
-	public function sortNew(){
+	public function saveNew(){
 		$this->load->model('exp_model');
 		$var = $this->session->flashdata('datito');
-		$this->session->keep_flashdata('datito');
-		if($this->exp_model->newExp($var))
-			redirect('sort');
+		if($this->exp_model->newExp())
+			redirect('home');
+			
 	}
 
  }

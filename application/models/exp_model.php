@@ -5,6 +5,19 @@ class Exp_model extends CI_Model{
 		parent::__construct();
 	}
 	
+	public function getProtos(){
+		$this->db->select('nom_prot')->from('protocolo')->order_by('id_prot');
+		$query = $this->db->get();
+		$protoTemp = array();
+		$i = 0;
+		foreach ($query ->result() as $row){
+
+			$protoTemp[$i]= $row->nom_prot;
+			$i++;
+		}
+		return $protoTemp;
+	}
+
 	public function getDatos(){
 		$this->db->select('*')->from('tasks')->order_by('tipo','desc');
 		$query = $this->db->get();
@@ -83,7 +96,48 @@ class Exp_model extends CI_Model{
 		return $descri;		
 	}
 
-	public function modOld($dato){
+	public function upExp($dato){
+		$this->db->select('id_prot');
+		$this->db->where('nom_prot', $this->input->post('protocolo'));
+		$consult = $this->db->get('protocolo');
+		$idProto = $consult->row()->id_prot;
+		$this->db->where('id_exp',$dato);
+		$fechaFormatI = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaIni'));
+		$fechaFormatF = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaFin'));
+		$newData = array(
+				'nom_exp'=> $this->input->post('nomProto'),
+				'desc' => $this->input->post('descProto'),
+				'fechaIni' => $fechaFormatI->format('Y-m-d'),
+				'fechaFin' => $fechaFormatF->format('Y-m-d'),
+				'estado' =>'completada',
+				'prot' => $idProto,
+			);
+		$this->db->update('experimentos',$newData);
+		return true;
+
+	}
+
+	public function newExp(){
+		$this->db->select('id_prot');
+		$this->db->where('nom_prot', $this->input->post('protocolo'));
+		$consult = $this->db->get('protocolo');
+		$idProto = $consult->row()->id_prot;
+		$fechaFormatI = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaIni'));
+		$fechaFormatF = DateTime::createFromFormat('d/m/Y', $this->input->post('fechaFin'));
+		$newData = array(
+				'nom_exp'=> $this->input->post('nomProto'),
+				'desc' => $this->input->post('descProto'),
+				'fechaIni' => $fechaFormatI->format('Y-m-d'),
+				'fechaFin' => $fechaFormatF->format('Y-m-d'),
+				'estado' => 'completa',
+				'dueno_exp' => $this->session->userdata('userid'),
+				'prot' => $idProto,
+			);
+		$this->db->insert('experimentos', $newData);
+		return true;
+	}
+	
+	/*public function modOld($dato){
 		$query = $this->db->where('id_exp',$dato)->get('experimentos');
 		$protUse = $query->row()->prot;
 		$datChecks = $this->input->post('taski');
@@ -188,7 +242,7 @@ class Exp_model extends CI_Model{
 		$this->session->set_userdata($data,$datoUse);
 		return true;
 	}
-
+	*/
 	public function getNameProt($dato){
 		$this->db->select('prot');
 		$this->db->where('id_exp',$dato);
@@ -198,6 +252,7 @@ class Exp_model extends CI_Model{
 		$dato2 = $query2->row()->nom_prot;
 		return $dato2;
 	}
+
 
 }
 ?>
