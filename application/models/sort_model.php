@@ -48,6 +48,20 @@ class Sort_model extends CI_Model{
 		return $arrDatos;
 
 	}
+
+	public function order($prot){
+		$datosOr = $this->input->post('item');
+		$totalDatos = count($datosOr);
+		foreach ($datosOr as $key => $value) {
+			$this->db->where('id_prot',$prot);
+			$this->db->where('id_task', $value);
+			$this->db->set('pos',$key);
+			$this->db->update('prottask');
+			echo '<br />'.$this->db->last_query();
+		}
+
+
+	}
 }
 
 ?>

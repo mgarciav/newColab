@@ -13,7 +13,7 @@
 			var elemCheck = document.getElementsByName('taski[]');
 			for(j=0;j<arrTasks.length;j++){
 				for(k=0;k<elemCheck.length;k++){
-					if(elemCheck[k].id == arrTasks[j]){		
+					if(elemCheck[k].value == arrTasks[j]){		
 						elemCheck[k].checked = true;
 					}
 				}
@@ -40,6 +40,7 @@
 		<p>Nombre del Protocolo: <input type="text" name="nomProto" value="<?php echo $datos['allExp']['nameProt']?>"></p>
 		<?php $auxH = 'asd'?>
 		<select id="selectMe">
+		<option></option>
  		<?php for($i=0;$i<count($datos['datosTasks']);$i++){ ?>
 			<?php if($auxH != $datos['datosTasks'][$i]['tipo']){?> 
 				<option value="<?php echo $i?>"><?php echo $datos['datosTasks'][$i]['tipo']?></option>
@@ -55,7 +56,7 @@
 				<?php $auxH = $datos['datosTasks'][$i]['tipo']?>
 			<?php }?>
 			<div>
-				<input type="checkbox" name="taski[]" value="<?php echo $datos['datosTasks'][$i]['id_task'] ?>" id="<?php echo $datos['datosTasks'][$i]['id_task'] ?>">
+				<input type="checkbox" name="taski[]" value="<?php echo $datos['datosTasks'][$i]['id_task'] ?>">
 				<k class="toggler">
 				
 					<span>Tarea: <?php echo $datos['datosTasks'][$i]['nom_task']?></span>

@@ -26,7 +26,9 @@
 	}
 
 	public function antiguo(){
-		$idPedido = $this->input->post('proti');
+		$this->load->model('prot_model');
+		$proto = $this->input->post('proti');
+		$idPedido = $this->prot_model->getProto($proto);
 		$this->session->set_flashdata('datito',$idPedido);
 		redirect('/tasks');
 		

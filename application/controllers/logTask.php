@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Login extends CI_Controller{
+class LogTask extends CI_Controller{
 	
 	function __construct(){
 		parent::__construct();
@@ -9,14 +9,14 @@ class Login extends CI_Controller{
 	public function index($msg = NULL){
 		
 		$data['msg'] = $msg;
-		$this->load->view('login_view', $data);
+		$this->load->view('nt_view', $data);
 	}
 	
 	public function process(){
 		// Load the model
-		$this->load->model('login_model');
+		$this->load->model('nt_model');
 		// Validate the user can login
-		$result = $this->login_model->validate();
+		$result = $this->nt_model->validate();
 		// Now we verify the result
 		if(! $result){
 			// If user did not validate, then show them login page again
@@ -26,7 +26,7 @@ class Login extends CI_Controller{
 		else{
 			// If user did validate, 
 			// Send them to members area
-			redirect('/casa');
+			redirect('/taskH');
 		}		
 	}
 }

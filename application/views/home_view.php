@@ -8,13 +8,13 @@
 
 <h2>Seleccione una sección para modificar</h2>
 <form id="Exp" action="<?php base_url();?>home/exp">
-	<input value="Administración de Experimentos" type="submit">
+	<input value="Administración de Experimentos" type="submit"><br>
 </form>
 <form id="Prot" action="<?php base_url();?>home/prot">
-	<input value="Administración de Protocolos" type="submit">
+	<input value="Administración de Protocolos" type="submit"><br>
 </form>
 <form id="UI" action="<?php base_url();?>home/ui">
-	<input value="Administración de Interfaces" type="submit">
+	<input value="Administración de Interfaces" type="submit"><br>
 </form>
 	<?php echo '<a href ='.base_url().'/home/do_logout> Logout</a>'; ?>
 </body>

@@ -129,11 +129,15 @@ class Exp_model extends CI_Model{
 				'desc' => $this->input->post('descProto'),
 				'fechaIni' => $fechaFormatI->format('Y-m-d'),
 				'fechaFin' => $fechaFormatF->format('Y-m-d'),
-				'estado' => 'completa',
+				'estado' => 'completada',
 				'dueno_exp' => $this->session->userdata('userid'),
 				'prot' => $idProto,
 			);
 		$this->db->insert('experimentos', $newData);
+		$this->db->select('id_exp')->where('nom_exp',$this->input->post('nomProto'));
+		$queryGet = $this->db->get('experimentos');
+		$idPedido = $queryGet->row()->id_exp;
+		$this->session->set_flashdata('datito',$idPedido);
 		return true;
 	}
 	

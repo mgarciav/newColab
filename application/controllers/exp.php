@@ -50,15 +50,15 @@
 
 	public function saveOld(){
 			$this->load->model('exp_model');
-			$var = $this->session->flashdata('datito');			
+			$var = $this->session->flashdata('datito');
+			$this->session->keep_flashdata('datito');			
 			if($this->exp_model->upExp($var))
-				redirect('home');
+				redirect('ws');
 	}
 	public function saveNew(){
 		$this->load->model('exp_model');
-		$var = $this->session->flashdata('datito');
 		if($this->exp_model->newExp())
-			redirect('home');
+			redirect('ws');
 			
 	}
 

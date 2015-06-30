@@ -27,6 +27,7 @@
 		<p>Nombre del Protocolo: <input type="text" name="nomProto"></p>
 		<?php $auxH = 'asd'?>
 		<select id="selectMe">
+		<option></option>
  		<?php for($i=0;$i<count($datosTasks);$i++){ ?>
 			<?php if($auxH != $datosTasks[$i]['tipo']){?> 
 				<option value="<?php echo $i?>"><?php echo $datosTasks[$i]['tipo']?></option>
