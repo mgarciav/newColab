@@ -9,7 +9,7 @@
 	<script>
 		$(document).on('ready', function(){
 			$('[name="tooli[]"]').on('change', function() {
-   		    	$(this).next(':checkbox').prop('disabled', !this.checked);
+   		    	$(this).next(':checkbox') .prop('checked', false).prop('disabled', !this.checked);
 			});
 			
 			$('.hidden').hide();
